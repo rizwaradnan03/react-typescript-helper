@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
@@ -6,6 +6,18 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 const MapPage: React.FC = () => {
   const [lat, setLat] = useState<number>(0);
   const [long, setLong] = useState<number>(0);
+
+  const handleChangeLatOrLong = () => {
+    return(
+      <>
+        {lat && long !== 0 ? <MapRender lat={lat} long={long} /> : null}
+      </>
+    )
+  }
+
+  useEffect(() => {
+    handleChangeLatOrLong()
+  }, [lat, long])
 
   return (
     <>
@@ -32,13 +44,14 @@ const MapPage: React.FC = () => {
             </div>
           </div>
         </div>
-        {lat && long !== 0 ? <MapRender lat={lat} long={long} /> : null}
+        {handleChangeLatOrLong()}
       </div>
     </>
   );
 };
 
 const MapRender: React.FC<{ lat: number; long: number }> = ({ lat, long }) => {
+  console.log('lattt', lat)
   return (
     <>
       <div className="card">
